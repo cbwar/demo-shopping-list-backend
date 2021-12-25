@@ -28,7 +28,7 @@ class ShoppingList
     #[Groups("shopping-list-read")]
     private $createdAt;
 
-    #[ORM\OneToMany(mappedBy: 'list', targetEntity: ShoppingListItem::class)]
+    #[ORM\OneToMany(mappedBy: 'list', targetEntity: ShoppingListItem::class, cascade: ["remove"])]
     #[Groups("shopping-list-read")]
     private $items;
 
