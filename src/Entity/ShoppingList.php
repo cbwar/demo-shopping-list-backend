@@ -1,34 +1,40 @@
-<?php
+<?php /** @noinspection PhpPropertyOnlyWrittenInspection */
 
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ShoppingListRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ShoppingListRepository::class)]
-#[ApiResource]
+#[ApiResource(normalizationContext: ['groups' => ['shopping-list-read']])]
 class ShoppingList
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups("shopping-list-read")]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups("shopping-list-read")]
     private $name;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups("shopping-list-read")]
     private $createdAt;
 
     #[ORM\OneToMany(mappedBy: 'list', targetEntity: ShoppingListItem::class)]
+    #[Groups("shopping-list-read")]
     private $items;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new DateTime();
         $this->items = new ArrayCollection();
     }
 
@@ -49,12 +55,12 @@ class ShoppingList
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): self
+    public function setCreatedAt(DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
