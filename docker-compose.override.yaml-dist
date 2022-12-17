@@ -1,0 +1,14 @@
+services:
+    app:
+        build:
+            args:
+                UID: 1000
+                GID: 1000
+        ports:
+            - "8060:8000"
+    phpmyadmin:
+        ports:
+            - "8061:80"
+    database:
+        ports:
+            - '3366:3306'

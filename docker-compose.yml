@@ -1,39 +1,40 @@
-version: '3'
+version: "3.9"
 
 services:
-  app:
-    build: ./docker
-    container_name: shopping-app
-    ports:
-      - "8060:8000"
-    volumes:
-      - ".:/sources"
-      - "~/.ssh:/home/dev/.ssh"
-  redis:
-    image: "redis:latest"
+    app:
+        build:
+            context: ./docker
+            args:
+                UID: 1000
+                GID: 1000
+        container_name: shopping-app
+        ports:
+            - "8000:8000"
+        volumes:
+            - ".:/sources"
+            - "~/.ssh:/home/dev/.ssh"
 
-  database:
-    image: "mariadb:10.6"
-    volumes:
-      - db-data:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=54adW2eq5DWepe
-      
-  phpmyadmin:
-    image: phpmyadmin
-    ports:
-      - "8061:80"
-    environment:
-      - PMA_HOST=database
-      - PMA_PORT=3306
-      - PMA_USER=root
-      - PMA_PASSWORD=54adW2eq5DWepe
+    redis:
+        image: "redis:latest"
 
-  maildev:
-    image: maildev/maildev
-    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
-    ports:
-      - "8062:80"
+    database:
+        image: "mariadb:10.6"
+        ports:
+            - '3306:3306'
+        volumes:
+            - db-data:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=54adW2eq5DWepe
+
+    phpmyadmin:
+        image: phpmyadmin
+        ports:
+            - "8001:80"
+        environment:
+            - PMA_HOST=database
+            - PMA_PORT=3306
+            - PMA_USER=root
+            - PMA_PASSWORD=54adW2eq5DWepe
 
 volumes:
-  db-data:
+    db-data:
