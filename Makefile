@@ -8,6 +8,8 @@ endif
 
 install:
 	${DOCKER} composer install
+	${DOCKER} php bin/console d:d:c --if-not-exists
+	${DOCKER} php bin/console d:m:m -n
 
 run:
 	docker-compose up --build -d
