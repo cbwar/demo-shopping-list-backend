@@ -24,6 +24,11 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/bin --filename=composer \
     && php -r "unlink('composer-setup.php');"
 
+RUN wget https://deb.nodesource.com/setup_18.x -O - | bash && \
+    apt-get install nodejs && \
+    rm -rf /var/lib/apt/lists/* && \
+    npm install --global npm@latest
+
 ARG UID=1000
 ARG GID=1000
 

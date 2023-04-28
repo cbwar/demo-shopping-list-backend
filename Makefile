@@ -10,6 +10,12 @@ install:
 	${DOCKER} composer install
 	${DOCKER} php bin/console d:d:c --if-not-exists
 	${DOCKER} php bin/console d:m:m -n
+	${DOCKER} npm i
+	${DOCKER} npm run dev
+
+watch:
+	${DOCKER} npm i
+	${DOCKER} npm run watch
 
 run:
 	docker-compose up --build -d

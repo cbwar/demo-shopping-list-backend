@@ -1,0 +1,25 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "es2015",
+      "es2016",
+      "es2017",
+      "esnext"
+    ]
+  },
+  "include": [
+    "assets/**/*.ts",
+    "assets/**/*.d.ts",
+    "assets/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
