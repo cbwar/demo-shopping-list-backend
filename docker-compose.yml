@@ -13,6 +13,7 @@ services:
         volumes:
             - ".:/sources"
             - "~/.ssh:/home/dev/.ssh"
+            - dev-data:/home/dev
 
     redis:
         image: "redis:latest"
@@ -38,3 +39,4 @@ services:
 
 volumes:
     db-data:
+    dev-data:
