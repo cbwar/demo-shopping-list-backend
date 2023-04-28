@@ -1,4 +1,4 @@
-FROM php:8.0-fpm
+FROM php:8.1-fpm
 
 RUN apt-get update && \
     apt-get install -y wget git unzip tzdata supervisor && \
@@ -9,7 +9,7 @@ RUN apt-get update && \
     pecl install xdebug && docker-php-ext-enable xdebug && \
     apt-get install -y libcurl4-openssl-dev libicu-dev && \
     docker-php-ext-configure intl && docker-php-ext-install intl && \
-    docker-php-ext-install pdo_mysql && \
+    docker-php-ext-install pdo_mysql opcache && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime && \
@@ -20,11 +20,9 @@ RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | b
     apt install -y symfony-cli && \
     rm -rf /var/lib/apt/lists/*
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-    php composer-setup.php && \
-    php -r "unlink('composer-setup.php');" && \
-    mv /var/www/html/composer.phar /usr/local/bin/composer && \
-    chmod +x /usr/local/bin/composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');"
 
 ARG UID=1000
 ARG GID=1000
@@ -32,8 +30,7 @@ ARG GID=1000
 RUN addgroup --gid ${GID} dev && \
     adduser --home /home/dev --uid ${UID} --gid ${GID} dev
 
-COPY php.ini /etc/php/8.0/fpm/conf.d/30-custom.ini
-COPY php.ini /etc/php/8.0/cli/conf.d/30-custom.ini
+COPY php.ini /usr/local/etc/php/conf.d/app.ini
 
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 CMD ["/usr/bin/supervisord"]

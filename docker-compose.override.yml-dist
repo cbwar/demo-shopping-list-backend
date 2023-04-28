@@ -1,0 +1,6 @@
+services:
+    app:
+        build:
+            args:
+                UID: 1000
+                GID: 1000
